@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load embed_video_tags %}
+{% block title %} Home pages {% endblock  %}
+{% block body %}
+
+{% for item in videos %}
+{% video item.url '426x240' %}<br>
+{{ item.title }}<br>
+{% endfor  %}
+
+
+{% endblock  %}
