@@ -36,7 +36,7 @@ from .models import videos
 # Register your models here.
 admin.site.register(videos)
 ```
-#### 4. Install embed Video
+#### 4. views.py
 
 ```
 from django.shortcuts import render
@@ -46,8 +46,18 @@ def home(request):
    video = videos.objects.all()
    return render(request,'home.html',{'videos' : video})
 ```
-#### 1. Install embed Video
+#### 5. Display video html file
 
 ```
-pip install django-embed-video
+{% extends  'base.html' %}
+{% load embed_video_tags %}
+
+
+{% block title %} Home Page {% endblock %}
+{% block body %}
+{% for item in videos %}
+{% video item.url '426x240' %}
+{{ item.title }}
+{% endfor  %}
+{% endblock %}
 ```
