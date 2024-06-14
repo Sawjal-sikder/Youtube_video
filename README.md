@@ -36,3 +36,18 @@ from .models import videos
 # Register your models here.
 admin.site.register(videos)
 ```
+#### 4. Install embed Video
+
+```
+from django.shortcuts import render
+from .models import videos
+# Create your views here.
+def home(request):
+   video = videos.objects.all()
+   return render(request,'home.html',{'videos' : video})
+```
+#### 1. Install embed Video
+
+```
+pip install django-embed-video
+```
