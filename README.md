@@ -21,10 +21,18 @@ class videos(models.Model):
    addDate = models.DateTimeField(auto_now_add=True)
    url = EmbedVideoField()
 
-
    def __str__(self):
        return str(self.title)
 
-
    class Meta:
-       ordering = ['-addDate'```
+       ordering = ['-addDate'
+```
+
+#### 3. admin.py
+
+```
+from django.contrib import admin
+from .models import videos
+# Register your models here.
+admin.site.register(videos)
+```
