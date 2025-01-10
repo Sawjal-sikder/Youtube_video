@@ -1,3 +1,34 @@
+
+# Django static & media file setup
+#### 1. Settings.py
+
+```
+STATIC_URL = 'static/'
+MEDIA_URL = 'media/'
+STATICFILES_DIRS = [BASE_DIR / 'static', ]
+MEDIA_ROOT = BASE_DIR / 'media'
+```
+#### 2. urls.py
+```
+from django.conf import settings
+from django.conf.urls.static import static
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
+
+
+
+# Django url button fix in javascripts
+#### 1. Django url button fix in javascripts
+
+```
+<button onclick="location.href='{% url 'home' item.id %}'">Go to Home</button>
+```
+
+
 # Youtube Video 
 #### 1. Install embed Video
 
@@ -65,9 +96,3 @@ def home(request):
 
 
 
-# Django url button fix in javascripts
-#### 1. Django url button fix in javascripts
-
-```
-<button onclick="location.href='{% url 'home' item.id %}'">Go to Home</button>
-```
