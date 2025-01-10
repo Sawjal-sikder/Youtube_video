@@ -61,3 +61,13 @@ def home(request):
 {% endfor  %}
 {% endblock %}
 ```
+
+
+
+
+# Django url button fix in javascripts
+#### 1. Django url button fix in javascripts
+
+```
+<button onclick="location.href='{% url 'home' item.id %}'">Go to Home</button>
+```
