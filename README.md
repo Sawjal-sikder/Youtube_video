@@ -21,6 +21,39 @@ if settings.DEBUG:
 
 
 
+# Django Modal form with widgets
+#### 1. form.py
+
+```
+# forms.py
+from django import forms
+from .models import Post
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'author', 'image', 'details']
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter the post title'
+            }),
+            'author': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+            'image': forms.ClearableFileInput(attrs={
+                'class': 'form-control'
+            }),
+            'details': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Write the details here...'
+            }),
+        }
+```
+
+
+
+
 # Django url button fix in javascripts
 #### 1. Django url button fix in javascripts
 
