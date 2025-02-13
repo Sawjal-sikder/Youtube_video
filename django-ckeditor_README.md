@@ -65,3 +65,17 @@ class BlogPost(models.Model):
         return self.title
 ```
 
+#### Step 7. Add CKEditor in Forms (Optional)
+
+```
+from django import forms
+from ckeditor.widgets import CKEditorWidget
+from .models import BlogPost
+
+class BlogPostForm(forms.ModelForm):
+    content = forms.CharField(widget=CKEditorWidget())
+
+    class Meta:
+        model = BlogPost
+        fields = '__all__'
+```
