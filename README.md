@@ -1,4 +1,10 @@
 
+# Django session for same page redrect
+#### 1. view.py
+```
+    return redirect(request.META.get('HTTP_REFERER', '/'))
+```
+
 # Django static & media file setup
 #### 1. Settings.py
 
