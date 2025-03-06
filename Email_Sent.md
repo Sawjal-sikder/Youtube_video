@@ -32,3 +32,24 @@ send_mail(
     fail_silently=False,
 )
 ```
+#### Configure Django views.py
+```
+from django.core.mail import send_mail
+from django.conf import settings
+
+def send_email(request):
+    if request.method == "POST":
+        to_mail = request.POST.get('to_mail')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        send_mail(
+            subject,
+            message,
+            settings.EMAIL_HOST_USER,
+            [to_mail],  # Wrap the recipient in a list
+            fail_silently=False,
+        )
+        print("Mail sent successfully!")
+
+```
