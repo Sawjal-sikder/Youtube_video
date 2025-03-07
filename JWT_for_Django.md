@@ -52,12 +52,11 @@ authentication classes:
 
 ```
   REST_FRAMEWORK = {
-      ...
-      'DEFAULT_AUTHENTICATION_CLASSES': (
-          ...
+     
+      'DEFAULT_AUTHENTICATION_CLASSES': (         
           'rest_framework_simplejwt.authentication.JWTAuthentication',
       )
-      ...
+      
   }
 ```
 Also, in your root ``urls.py`` file (or any other url config), include routes
@@ -69,14 +68,14 @@ for Simple JWT's ``TokenObtainPairView`` and ``TokenRefreshView`` views:
       TokenObtainPairView,
       TokenRefreshView,
   )
-```
+
   urlpatterns = [
-      ...
+      
       path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
       path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-      ...
+      
   ]
-
+```
 You can also include a route for Simple JWT's ``TokenVerifyView`` if you wish to
 allow API users to verify HMAC-signed tokens without having access to your
 signing key:
