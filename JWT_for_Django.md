@@ -39,7 +39,7 @@ The ``djangorestframework-simplejwt[crypto]`` format is recommended in requireme
 files in projects using ``Simple JWT``, as a separate ``cryptography`` requirement
 line may later be mistaken for an unused requirement and removed.
 
-.. _`cryptography`: https://cryptography.io
+
 
 Project Configuration
 ---------------------
@@ -59,6 +59,24 @@ authentication classes:
       
   }
 ```
+### and time
+
+```
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
+```
+
 Also, in your root ``urls.py`` file (or any other url config), include routes
 for Simple JWT's ``TokenObtainPairView`` and ``TokenRefreshView`` views:
 
