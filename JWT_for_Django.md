@@ -17,9 +17,10 @@ Installation
 
 Simple JWT can be installed with pip:
 
-``` pip install djangorestframework-simplejwt ```
-
-  pip install djangorestframework-simplejwt
+``` 
+pip install djangorestframework-simplejwt
+```
+  
 
 
 Cryptographic Dependencies (Optional)
@@ -30,9 +31,9 @@ signature algorithms (i.e. RSA and ECDSA; visit PyJWT for other algorithms), you
 cryptography_ library. This can be installed explicitly, or as a required
 extra in the ``djangorestframework-simplejwt`` requirement:
 
-.. code-block:: console
-
+```
   pip install djangorestframework-simplejwt[crypto]
+```
 
 The ``djangorestframework-simplejwt[crypto]`` format is recommended in requirements
 files in projects using ``Simple JWT``, as a separate ``cryptography`` requirement
@@ -48,8 +49,8 @@ Then, your django project must be configured to use the library.  In
 ``rest_framework_simplejwt.authentication.JWTAuthentication`` to the list of
 authentication classes:
 
-.. code-block:: python
 
+```
   REST_FRAMEWORK = {
       ...
       'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -58,17 +59,17 @@ authentication classes:
       )
       ...
   }
-
+```
 Also, in your root ``urls.py`` file (or any other url config), include routes
 for Simple JWT's ``TokenObtainPairView`` and ``TokenRefreshView`` views:
 
-.. code-block:: python
+```
 
   from rest_framework_simplejwt.views import (
       TokenObtainPairView,
       TokenRefreshView,
   )
-
+```
   urlpatterns = [
       ...
       path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
@@ -80,30 +81,30 @@ You can also include a route for Simple JWT's ``TokenVerifyView`` if you wish to
 allow API users to verify HMAC-signed tokens without having access to your
 signing key:
 
-.. code-block:: python
+```
 
   from rest_framework_simplejwt.views import TokenVerifyView
 
   urlpatterns = [
-      ...
+      
       path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-      ...
+      
   ]
-
+```
 The ``TokenVerifyView`` provides no information about a token's fitness for a particular use,
 it only verifies if a token is valid or not, and return a 200 or 401 status code respectively.
 
 If you wish to use localizations/translations, simply add
 ``rest_framework_simplejwt`` to ``INSTALLED_APPS``.
 
-.. code-block:: python
+```
 
   INSTALLED_APPS = [
-      ...
+      
       'rest_framework_simplejwt',
-      ...
+      
   ]
-
+```
 
 Usage
 -----
