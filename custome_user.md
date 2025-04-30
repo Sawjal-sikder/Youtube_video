@@ -4,10 +4,9 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from phonenumber_field.modelfields import PhoneNumberField
+```
 
-
-# Custom User Manager
-
+```
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -30,8 +29,9 @@ class CustomUserManager(BaseUserManager):
 
         return self.create_user(email, password, **extra_fields)
 
-
-### Custom User Model
+```
+```
+# Custom User Model
 
 class CustomUser(AbstractUser):
     username = None  ### Remove username field
@@ -53,7 +53,7 @@ class CustomUser(AbstractUser):
 
 
 
-# accounts/admin.py
+### accounts/admin.py
 ```
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
