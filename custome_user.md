@@ -92,4 +92,6 @@ INSTALLED_APPS = [
 ```
 PHONENUMBER_DEFAULT_REGION = 'BD'
 #for phone number field
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
 ```
