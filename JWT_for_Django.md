@@ -18,28 +18,11 @@ Installation
 Simple JWT can be installed with pip:
 
 ``` 
+pip install djangorestframework
 pip install djangorestframework-simplejwt
+pip install django-filter
 ```
   
-
-
-Cryptographic Dependencies (Optional)
--------------------------------------
-
-If you are planning on encoding or decoding tokens using certain digital
-signature algorithms (i.e. RSA and ECDSA; visit PyJWT for other algorithms), you will need to install the
-cryptography_ library. This can be installed explicitly, or as a required
-extra in the ``djangorestframework-simplejwt`` requirement:
-
-```
-  pip install djangorestframework-simplejwt[crypto]
-```
-
-The ``djangorestframework-simplejwt[crypto]`` format is recommended in requirements
-files in projects using ``Simple JWT``, as a separate ``cryptography`` requirement
-line may later be mistaken for an unused requirement and removed.
-
-
 
 Project Configuration
 ---------------------
@@ -51,32 +34,48 @@ authentication classes:
 
 
 ```
-  REST_FRAMEWORK = {
-     
-      'DEFAULT_AUTHENTICATION_CLASSES': (         
-          'rest_framework_simplejwt.authentication.JWTAuthentication',
-      )
-      
-  }
+ INSTALLED_APPS = [
+    ...
+    'rest_framework',
+    'rest_framework_simplejwt',
+    'django_filters',
+]
+
 ```
-### and time
+and 
 
 ```
 from datetime import timedelta
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
-    ],
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
 }
+
 ```
 
 Also, in your root ``urls.py`` file (or any other url config), include routes
@@ -96,74 +95,4 @@ for Simple JWT's ``TokenObtainPairView`` and ``TokenRefreshView`` views:
       
   ]
 ```
-You can also include a route for Simple JWT's ``TokenVerifyView`` if you wish to
-allow API users to verify HMAC-signed tokens without having access to your
-signing key:
 
-```
-
-  from rest_framework_simplejwt.views import TokenVerifyView
-
-  urlpatterns = [
-      
-      path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
-      
-  ]
-```
-The ``TokenVerifyView`` provides no information about a token's fitness for a particular use,
-it only verifies if a token is valid or not, and return a 200 or 401 status code respectively.
-
-If you wish to use localizations/translations, simply add
-``rest_framework_simplejwt`` to ``INSTALLED_APPS``.
-
-```
-
-  INSTALLED_APPS = [
-      
-      'rest_framework_simplejwt',
-      
-  ]
-```
-
-Usage
------
-
-To verify that Simple JWT is working, you can use curl to issue a couple of
-test requests:
-
-.. code-block:: bash
-
-  curl \
-    -X POST \
-    -H "Content-Type: application/json" \
-    -d '{"username": "davidattenborough", "password": "boatymcboatface"}' \
-    http://localhost:8000/api/token/
-
-  ...
-  {
-    "access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3BrIjoxLCJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiY29sZF9zdHVmZiI6IuKYgyIsImV4cCI6MTIzNDU2LCJqdGkiOiJmZDJmOWQ1ZTFhN2M0MmU4OTQ5MzVlMzYyYmNhOGJjYSJ9.NHlztMGER7UADHZJlxNG0WSi22a2KaYSfd1S-AuT7lU",
-    "refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3BrIjoxLCJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImNvbGRfc3R1ZmYiOiLimIMiLCJleHAiOjIzNDU2NywianRpIjoiZGUxMmY0ZTY3MDY4NDI3ODg5ZjE1YWMyNzcwZGEwNTEifQ.aEoAYkSJjoWH1boshQAaTkf8G3yn0kapko6HFRt7Rh4"
-  }
-
-You can use the returned access token to prove authentication for a protected
-view:
-
-.. code-block:: bash
-
-  curl \
-    -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3BrIjoxLCJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiY29sZF9zdHVmZiI6IuKYgyIsImV4cCI6MTIzNDU2LCJqdGkiOiJmZDJmOWQ1ZTFhN2M0MmU4OTQ5MzVlMzYyYmNhOGJjYSJ9.NHlztMGER7UADHZJlxNG0WSi22a2KaYSfd1S-AuT7lU" \
-    http://localhost:8000/api/some-protected-view/
-
-When this short-lived access token expires, you can use the longer-lived
-refresh token to obtain another access token:
-
-.. code-block:: bash
-
-  curl \
-    -X POST \
-    -H "Content-Type: application/json" \
-    -d '{"refresh":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3BrIjoxLCJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImNvbGRfc3R1ZmYiOiLimIMiLCJleHAiOjIzNDU2NywianRpIjoiZGUxMmY0ZTY3MDY4NDI3ODg5ZjE1YWMyNzcwZGEwNTEifQ.aEoAYkSJjoWH1boshQAaTkf8G3yn0kapko6HFRt7Rh4"}' \
-    http://localhost:8000/api/token/refresh/
-
-  ...
-  {"access":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX3BrIjoxLCJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiY29sZF9zdHVmZiI6IuKYgyIsImV4cCI6MTIzNTY3LCJqdGkiOiJjNzE4ZTVkNjgzZWQ0NTQyYTU0NWJkM2VmMGI0ZGQ0ZSJ9.ekxRxgb9OKmHkfy-zs1Ro_xs1eMLXiR17dIDBVxeT-w"}
