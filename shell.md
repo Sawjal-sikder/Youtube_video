@@ -12,3 +12,13 @@ plans = Plan.objects.all()
 for plan in plans:
   print(json.dumps(model_to_dict(plan), indent=2))
 ```
+show json data for serializers
+```bash
+from django.core import serializers
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+users = User.objects.all()
+
+print(serializers.serialize("json", users, indent=2))
+```
