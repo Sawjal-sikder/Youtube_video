@@ -11,16 +11,37 @@ Click Add destination
 In the Destination URL, enter:
 https://yourdomain/api/payment/webhook/
 Select the following events:
+```
 checkout.session.completed
+```
+```
 customer.created
+```
+```
 customer.updated
+```
+```
 customer.subscription.created
+```
+```
 customer.subscription.deleted
+```
+```
 customer.subscription.updated
+```
+```
 customer.subscription.trial_will_end
+```
+```
 invoice.paid
+```
+```
 invoice.payment_failed
+```
+```
 invoice.payment_succeeded
+```
+
 Save the webhook configuration
 After saving, copy the Signing Secret — this is your STRIPE_WEBHOOK_SECRET
 Share the STRIPE_WEBHOOK_SECRET securely with us
