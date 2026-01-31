@@ -28,7 +28,6 @@ INSTALLED_APPS = [
     # ... other apps
     "rest_framework",
     "drf_spectacular",
-    "product",  # your app
 ]
 ```
 
@@ -42,15 +41,11 @@ REST_FRAMEWORK = {
 4. Add drf-spectacular settings:
 ```python
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Product API',
-    'DESCRIPTION': 'API for managing products',
+    'TITLE': 'Your Project API',
+    'DESCRIPTION': 'Your project description',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
-    'SWAGGER_UI_SETTINGS': {
-        'deepLinking': True,
-        'persistAuthorization': True,
-        'displayOperationId': False,
-    }
+    # OTHER SETTINGS
 }
 ```
 
@@ -62,12 +57,14 @@ from drf_spectacular.views import (
     SpectacularSwaggerView
 )
 
+```
+urls.py
+```
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 urlpatterns = [
-    # Your API URLs
-    path('api/', include('product.urls')),
-    
-    # Documentation URLs
+    # YOUR PATTERNS
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    # Optional UI:
     path('api/schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('api/schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
