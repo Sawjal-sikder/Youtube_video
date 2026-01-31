@@ -51,16 +51,10 @@ SPECTACULAR_SETTINGS = {
 
 5. Add URLs to your `urls.py`:
 ```python
-from drf_spectacular.views import (
-    SpectacularAPIView,
-    SpectacularRedocView,
-    SpectacularSwaggerView
-)
-
-```
-urls.py
-```
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+```
+urlpatterns
+```
 urlpatterns = [
     # YOUR PATTERNS
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
